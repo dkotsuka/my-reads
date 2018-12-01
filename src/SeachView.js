@@ -5,22 +5,22 @@ import Book from './Book'
 
 class SeachView extends Component{
 	state = {
-		result: [],
-		isEmpty: true,
-		message: 'Empty search'
+		query: '',
+		result: []
 	}
 
 	updateQuery = (query) => {
+		this.setState({ query: query.trim() })
 		if(query){
 			const result = []
 			BooksAPI.search(query).then((books) => {
 				books.map(
 					book => result.push(book)
 				)
-				this.setState({result, isEmpty: false})
-			}).catch(() => this.setState({result: [], isEmpty: true, message: 'No results found!'}))
+				this.setState({result})
+			}).catch(() => this.setState({result: []}))
 		}else{
-			this.setState({result: [], isEmpty: true})
+			this.setState({result: []})
 		}
 	}
 
@@ -29,19 +29,12 @@ class SeachView extends Component{
 	}
 
 	render(){
+		const booksInShelf = this.props.booksInShelf
 		return (
 			<div className="search-books">
 	            <div className="search-books-bar">
 	            <Link to='/' className='close-search'>Close</Link>
 	            	<div className="search-books-input-wrapper">
-		                {/*
-		                  NOTES: The search from BooksAPI is limited to a particular set of search terms.
-		                  You can find these search terms here:
-		                  https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
-
-		                  However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-		                  you don't find a specific author or title. Every search is limited by search terms.
-		                */}
 		                <input type="text" 
 		                	placeholder="Search by title or author"
 							onChange={(event) => this.updateQuery(event.target.value)}/>
@@ -49,15 +42,24 @@ class SeachView extends Component{
 	            	</div>
 	            </div>
 	            <div className="search-books-results">
-	            	{!this.state.isEmpty ? (
+	              	{ !this.state.query ? (<div className='empty-result'><p>Empty search</p></div>) 
+	              	: this.state.result.length > 0 ? (
 	            		<ol className="books-grid">{
-			              	this.state.result.map((book) => (
-			              		<Book book={book}
+			              	this.state.result.map((b) => {
+			              		const book = b
+			              		const bookInShelf = booksInShelf.filter((bis) => bis.id === book.id)
+			              		let shelf = 'none'
+			              		if(bookInShelf[0]){
+			              			shelf = bookInShelf[0].shelf
+			              		}
+			              		book.shelf = shelf
+			              		return (
+			              			<Book book={book}
 									key={book.id}
-									onChangeShelf={this.changeShelf}/>
-			              	))
+									onChangeShelf={this.changeShelf}/>)
+			              	})
 		              	}</ol>
-	              	) : (<div className='empty-result'><p>{this.state.message}</p></div>)}
+	              	) : (<div className='empty-result'><p>No results found!</p></div>)}
 	            	
 	            </div>
         	</div>

@@ -205,3 +205,12 @@ body, .app {
   font-weight: bold;
   color: #999;
 }
+
+.no-cover-thumbnail{
+  text-align: center;
+  width: 100%;
+  font-size: 1.2em;
+  font-weight: bold;
+  font-family: monospace;
+  margin-top: 60px;
+}

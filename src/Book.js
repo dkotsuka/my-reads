@@ -2,6 +2,18 @@ import React from 'react'
 
 function Book(props) {
 	const book = props.book
+	let shelf = 'none',
+		thumbnail = '',
+		noCover = ''
+	if(book.shelf){
+		shelf = book.shelf
+	}
+	if(book.imageLinks){
+		thumbnail = book.imageLinks.thumbnail
+	} else {
+		noCover = <p className='no-cover-thumbnail'>Image is not available.</p>
+	}
+
 	return (						
 		<li key={book.id}>
 			<div className="book">
@@ -9,11 +21,11 @@ function Book(props) {
 					<div className="book-cover" style={
 						{ 
 							width: 128, height: 193, 
-							backgroundImage: `url(${book.imageLinks.thumbnail})`
+							backgroundImage: `url(${thumbnail})`
 						}
-					}></div>
+					}>{noCover}</div>
 					<div className="book-shelf-changer">
-						<select value={book.shelf} 
+						<select value={shelf} 
 							onChange={(event) => props.onChangeShelf(book, event.target.value)}>
 
 							<option value="move" disabled>Move to...</option>
