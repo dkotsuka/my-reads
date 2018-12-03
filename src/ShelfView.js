@@ -9,7 +9,6 @@ function ShelfView(props) {
             </div>
 
             <div className="list-books-content">
-              <div>
                 <BookShelf books={props.currentlyReading} 
                   shelfTitle='Currently Reading' 
                   onChangeShelf={props.changeShelf}/>
@@ -21,7 +20,6 @@ function ShelfView(props) {
                 <BookShelf books={props.read} 
                   shelfTitle='Read' 
                   onChangeShelf={props.changeShelf}/>
-              </div>
             </div>
 
             <div className="open-search">

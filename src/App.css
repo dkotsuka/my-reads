@@ -214,3 +214,35 @@ body, .app {
   font-family: monospace;
   margin-top: 60px;
 }
+
+.fade-enter {
+  opacity: 0.01;
+}
+.fade-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
+.fade-exit {
+  opacity: 1;
+}
+.fade-exit-active {
+  opacity: 0.01;
+  transition: opacity 500ms ease-in;
+}
+.fetching-container{
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.fetching-spinner{
+  width: 80px;
+  height: 80px;
+  border-radius: 5px;
+  background: #555;
+  background-image: url('./icons/loading-spin.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 40px;
+}

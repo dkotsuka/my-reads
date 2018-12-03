@@ -9,14 +9,11 @@ class BooksApp extends React.Component {
     state = {
         currentlyReading: [],
         wantToRead: [],
-        read: []
+        read: [],
+        none: []
     }
 
     componentDidMount() {
-        this.updateShelves()
-    }
-
-    updateShelves() {
         BooksAPI.getAll().then((books) => {
             const newState = this.state
             books.forEach((book) => { newState[book.shelf].push(book) })
@@ -55,8 +52,10 @@ class BooksApp extends React.Component {
             />
         )}/>
 
-        <Route exact path={'/search'} render={() => (
-          <SeachView booksInShelf={books}/>
+        <Route path={'/search'} render={() => (
+          <SeachView 
+            booksInShelf={books}
+            changeShelf={this.changeShelf}/>
         )}/>
 
       </div>

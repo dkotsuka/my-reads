@@ -2,30 +2,28 @@ import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
 import Book from './Book'
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 class SeachView extends Component{
 	state = {
 		query: '',
-		result: []
+		result: [],
+		isFetching: false
 	}
 
 	updateQuery = (query) => {
-		this.setState({ query: query.trim() })
+		this.setState({ query: query.trim() , isFetching: true})
 		if(query){
 			const result = []
 			BooksAPI.search(query).then((books) => {
 				books.map(
 					book => result.push(book)
 				)
-				this.setState({result})
+				this.setState({result , isFetching: false})
 			}).catch(() => this.setState({result: []}))
 		}else{
-			this.setState({result: []})
+			this.setState({result: [] , isFetching: false})
 		}
-	}
-
-	changeShelf = (book, shelf) => {
-		BooksAPI.update(book,shelf)
 	}
 
 	render(){
@@ -41,27 +39,37 @@ class SeachView extends Component{
 
 	            	</div>
 	            </div>
-	            <div className="search-books-results">
-	              	{ !this.state.query ? (<div className='empty-result'><p>Empty search</p></div>) 
-	              	: this.state.result.length > 0 ? (
-	            		<ol className="books-grid">{
-			              	this.state.result.map((b) => {
-			              		const book = b
-			              		const bookInShelf = booksInShelf.filter((bis) => bis.id === book.id)
-			              		let shelf = 'none'
-			              		if(bookInShelf[0]){
-			              			shelf = bookInShelf[0].shelf
-			              		}
-			              		book.shelf = shelf
-			              		return (
-			              			<Book book={book}
-									key={book.id}
-									onChangeShelf={this.changeShelf}/>)
-			              	})
-		              	}</ol>
-	              	) : (<div className='empty-result'><p>No results found!</p></div>)}
-	            	
-	            </div>
+	            {this.state.isFetching ? 
+	            	(<div className='fetching-container'><div className='fetching-spinner'></div></div>) 
+	            	: (
+			            <div className="search-books-results">
+			              	{ !this.state.query ? (<div className='empty-result'><p>Empty search</p></div>) 
+			              	: this.state.result.length > 0 ? (
+			            		<TransitionGroup className="transition-group books-grid">{
+					              	this.state.result.map((b) => {
+					              		const book = b
+					              		const bookInShelf = booksInShelf.filter((bis) => bis.id === book.id)
+					              		let shelf = 'none'
+					              		if(bookInShelf[0]){
+					              			shelf = bookInShelf[0].shelf
+					              		}
+					              		book.shelf = shelf
+					              		return (
+					              			<CSSTransition
+								                key={book.id}
+								                timeout={500}
+								                classNames="fade"
+								              >
+						              			<Book book={book}
+												onChangeShelf={this.props.changeShelf}/>
+											</CSSTransition>
+										)
+					              	})
+				              	}</TransitionGroup>
+			              	) : (<div className='empty-result'><p>No results found!</p></div>)}
+			            </div>
+	            	)}
+
         	</div>
         )
 	}
