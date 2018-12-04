@@ -35,12 +35,32 @@ function Book(props) {
 							<option value="none">None</option>
 						</select>
 					</div>
+					<ShelfTag shelfTag={props.shelfTag}/>
 				</div>
 			    <div className="book-title">{book.title}</div>
 			    <div className="book-authors">{book.authors}</div>
 			</div>
 		</li>
 	)
+}
+
+function ShelfTag(props) {
+	if(!props.shelfTag){
+		return ""
+	}
+	const tags = [
+		{name: 'currentlyReading', text:`You're reading`, color: '234,220,0'},
+		{name: 'wantToRead', text:'You lust this', color: '234,120,20'},
+		{name: 'read', text: 'You finished', color: '23,220,40'}
+	]
+
+	const thisTag = tags.filter((t) => props.shelfTag === t.name)
+
+	return (props.shelfTag !== 'none'? (
+		<div className='shelf-tag' style={{backgroundColor: `rgb(${thisTag[0].color})`}}>
+			<small>{thisTag[0].text}</small>
+		</div>
+	) : "")
 }
 
 export default Book

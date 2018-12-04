@@ -20,7 +20,7 @@ class SeachView extends Component{
 					book => result.push(book)
 				)
 				this.setState({result , isFetching: false})
-			}).catch(() => this.setState({result: []}))
+			}).catch(() => this.setState({result: [], isFetching: false}))
 		}else{
 			this.setState({result: [] , isFetching: false})
 		}
@@ -61,6 +61,7 @@ class SeachView extends Component{
 								                classNames="fade"
 								              >
 						              			<Book book={book}
+						              			shelfTag={book.shelf}
 												onChangeShelf={this.props.changeShelf}/>
 											</CSSTransition>
 										)
