@@ -49,15 +49,15 @@ function ShelfTag(props) {
 		return ""
 	}
 	const tags = [
-		{name: 'currentlyReading', text:`You're reading`, color: '234,220,0'},
-		{name: 'wantToRead', text:'You lust this', color: '234,120,20'},
-		{name: 'read', text: 'You finished', color: '23,220,40'}
+		{name: 'currentlyReading', text:`Currently reading`, className: 'shelf-tag tag-currently-reading'},
+		{name: 'wantToRead', text:'Want to read', className: 'shelf-tag tag-want-to-read'},
+		{name: 'read', text: 'Read', className: 'shelf-tag tag-already-read'}
 	]
 
 	const thisTag = tags.filter((t) => props.shelfTag === t.name)
 
 	return (props.shelfTag !== 'none'? (
-		<div className='shelf-tag' style={{backgroundColor: `rgb(${thisTag[0].color})`}}>
+		<div className={thisTag[0].className}>
 			<small>{thisTag[0].text}</small>
 		</div>
 	) : "")

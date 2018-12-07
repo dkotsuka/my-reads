@@ -259,3 +259,24 @@ body, .app {
   top: 10px;
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
+
+.tag-already-read{
+  background-color: rgb(23,220,40); 
+  animation: opacity-animation 1s;
+}
+.tag-currently-reading{
+  background-color: rgb(234,220,0); 
+  animation: opacity-animation 1s;
+}
+.tag-want-to-read{
+  background-color: rgb(234,120,20); 
+  animation: opacity-animation 1s;
+}
+@keyframes opacity-animation {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
